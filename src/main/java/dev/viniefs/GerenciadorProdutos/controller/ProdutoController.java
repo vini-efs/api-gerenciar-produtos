@@ -2,7 +2,9 @@ package dev.viniefs.GerenciadorProdutos.controller;
 
 import dev.viniefs.GerenciadorProdutos.model.ProdutoModel;
 import dev.viniefs.GerenciadorProdutos.service.ProdutoService;
-import org.springframework.stereotype.Controller;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,17 +19,18 @@ public class ProdutoController {
         this.produtoService = produtoService;
     }
 
-    @GetMapping("/teste")
-    public String testeProduto() { return "Testando o controller"; }
-
     @PostMapping("/criar")
-    public ProdutoModel criarProduto(@RequestBody ProdutoModel produto) {
-        return produtoService.criarProduto(produto);
+    public ResponseEntity<String> criarProduto(@Valid @RequestBody ProdutoModel produto) {
+        ProdutoModel novoProduto = produtoService.criarProduto(produto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Produto de ID número " + novoProduto.getId() + " criado com sucesso!");
+
     }
 
     @GetMapping("/listar")
-    public List<ProdutoModel> listarProdutos() {
-        return produtoService.listarProdutos();
+    public ResponseEntity<List<ProdutoModel>> listarProdutos() {
+        List<ProdutoModel> listaDosProdutos = produtoService.listarProdutos();
+        return ResponseEntity.ok(listaDosProdutos);
     }
 
     @DeleteMapping("/deletar/{id}")

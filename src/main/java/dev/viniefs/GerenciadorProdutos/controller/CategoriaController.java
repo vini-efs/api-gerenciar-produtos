@@ -2,6 +2,9 @@ package dev.viniefs.GerenciadorProdutos.controller;
 
 import dev.viniefs.GerenciadorProdutos.model.CategoriaModel;
 import dev.viniefs.GerenciadorProdutos.service.CategoriaService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,19 +19,17 @@ public class CategoriaController {
         this.categoriaService = categoriaService;
     }
 
-    @GetMapping("/teste")
-    public String testeCategoria() {
-        return "Testando controller da categoria";
-    }
-
     @PostMapping("/criar")
-    public CategoriaModel criarCategoria(@RequestBody CategoriaModel novaCategoria) {
-        return categoriaService.criarCategoria(novaCategoria);
+    public ResponseEntity<String> criarCategoria(@Valid @RequestBody CategoriaModel categoria) {
+        CategoriaModel novaCategoria = categoriaService.criarCategoria(categoria);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Categoria com ID " + novaCategoria.getId() + " foi criada com sucesso!");
     }
 
     @GetMapping("/listar")
-    public List<CategoriaModel> listarCategoria() {
-        return categoriaService.listarCategoria();
+    public ResponseEntity<List<CategoriaModel>> listarCategoria() {
+        List<CategoriaModel> listaDasCategorias = categoriaService.listarCategoria();
+        return ResponseEntity.ok(listaDasCategorias);
     }
 
     @DeleteMapping("/deletar/{id}")
