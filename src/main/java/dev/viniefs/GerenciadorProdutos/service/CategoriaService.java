@@ -5,6 +5,7 @@ import dev.viniefs.GerenciadorProdutos.repository.CategoriaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoriaService {
@@ -20,6 +21,11 @@ public class CategoriaService {
 
     public List<CategoriaModel> listarCategoria() {
         return categoriaRepository.findAll();
+    }
+
+    public CategoriaModel listarCategoriaPorId(Long id) {
+        Optional<CategoriaModel> listarPorId = categoriaRepository.findById(id);
+        return listarPorId.orElse(null);
     }
 
     public void deletarCategoria(Long id) {
