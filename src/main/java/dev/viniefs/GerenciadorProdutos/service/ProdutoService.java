@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -23,6 +24,11 @@ public class ProdutoService {
 
     public List<ProdutoModel> listarProdutos() {
         return produtoRepository.findAll();
+    }
+
+    public ProdutoModel listarProdutoPorId(Long id) {
+        Optional<ProdutoModel> produtoPorId = produtoRepository.findById(id);
+        return produtoPorId.orElse(null);
     }
 
     public void deletarProduto(Long id) {
